@@ -22,6 +22,7 @@ async def async_setup_entry(
         [
             ElectroluxDisplaySwitch(coordinator),
             ElectroluxSleepSwitch(coordinator),
+            ElectroluxSelfCleanSwitch(coordinator),
         ]
     )
 
@@ -81,4 +82,29 @@ class ElectroluxSleepSwitch(_ElectroluxSwitch):
 
     async def async_turn_off(self, **kwargs) -> None:
         await self.hass.async_add_executor_job(self.coordinator.device.set_sleep, False)
+        await self.coordinator.async_request_refresh()
+
+
+class ElectroluxSelfCleanSwitch(_ElectroluxSwitch):
+    """Unit self-clean. Reads mldprf and writes the existing set_self_clean command."""
+
+    _attr_translation_key = "self_clean"
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_icon = "mdi:broom"
+
+    def __init__(self, coordinator: ElectroluxCoordinator) -> None:
+        super().__init__(coordinator, "clean")
+
+    @property
+    def is_on(self) -> bool | None:
+        if "mldprf" not in self._status:
+            return None
+        return self._status.get("mldprf") == 1
+
+    async def async_turn_on(self, **kwargs) -> None:
+        await self.hass.async_add_executor_job(self.coordinator.device.set_self_clean, True)
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self, **kwargs) -> None:
+        await self.hass.async_add_executor_job(self.coordinator.device.set_self_clean, False)
         await self.coordinator.async_request_refresh()

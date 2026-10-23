@@ -53,7 +53,26 @@
         "name": "Display"
       },
       "sleep": {
-        "name": "Sleep"
+        "name": "Sleep mode"
+      },
+      "self_clean": {
+        "name": "Self-clean"
+      }
+    },
+    "binary_sensor": {
+      "compressor": {
+        "name": "Compressor"
+      },
+      "defrost": {
+        "name": "Defrost"
+      },
+      "horizontal_swing": {
+        "name": "Horizontal swing"
+      }
+    },
+    "sensor": {
+      "status_code": {
+        "name": "Status code"
       }
     }
   }

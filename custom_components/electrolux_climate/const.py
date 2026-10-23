@@ -13,5 +13,10 @@ DEFAULT_MIN = 17
 MAX_TEMP = 40
 DEFAULT_MAX = 30
 
-PLATFORMS: list[Platform] = [Platform.CLIMATE, Platform.SWITCH]
+PLATFORMS: list[Platform] = [
+    Platform.CLIMATE,
+    Platform.SWITCH,
+    Platform.BINARY_SENSOR,
+    Platform.SENSOR,
+]
 SCAN_INTERVAL = timedelta(seconds=30)
