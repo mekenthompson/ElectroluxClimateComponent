@@ -7,6 +7,8 @@ contributor docs' native_* names are not on this core.
 
 from __future__ import annotations
 
+import time
+
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     ATTR_HVAC_MODE,
@@ -163,10 +165,14 @@ class ElectroluxClimateEntity(CoordinatorEntity[ElectroluxCoordinator], ClimateE
 
     async def async_set_swing_horizontal_mode(self, swing_horizontal_mode: str) -> None:
         await self.hass.async_add_executor_job(
-            self.coordinator.device.set_horizontal,
+            self._set_horizontal,
             swing_horizontal_mode == SWING_HORIZONTAL_ON,
         )
         await self.coordinator.async_request_refresh()
+
+    def _set_horizontal(self, enabled: bool) -> None:
+        self.coordinator.device.set_horizontal(enabled)
+        time.sleep(1)
 
     async def async_set_temperature(self, **kwargs) -> None:
         if (mode := kwargs.get(ATTR_HVAC_MODE)) is not None:

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTime
@@ -45,10 +47,10 @@ class ElectroluxSleepTimerNumber(CoordinatorEntity[ElectroluxCoordinator], Numbe
 
     async def async_set_native_value(self, value: float) -> None:
         hours, minutes = split_timer_minutes(int(round(value)))
-        await self.hass.async_add_executor_job(
-            self.coordinator.device.set_timer,
-            False,
-            hours,
-            minutes,
-        )
+        await self.hass.async_add_executor_job(self._write, hours, minutes)
         await self.coordinator.async_request_refresh()
+
+    def _write(self, hours: int, minutes: int) -> None:
+        self.coordinator.device.set_timer(False, hours, minutes)
+        # The unit applies the timer a moment after the ack.
+        time.sleep(1)
