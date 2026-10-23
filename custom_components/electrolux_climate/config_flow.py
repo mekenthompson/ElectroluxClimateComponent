@@ -1,4 +1,5 @@
 """Config flow for Electrolux Climate."""
+import logging
 from pickle import NONE
 import broadlink
 import base64
@@ -49,7 +50,8 @@ class ElectroluxClimateConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_dhcp(self, discovery_info: dhcp.DhcpServiceInfo) -> data_entry_flow.FlowResult:
         """Handle dhcp discovery."""
 
-        print('DHCP called')
+        _LOGGER = logging.getLogger(__name__)
+        _LOGGER.debug("DHCP discovery for Electrolux climate")
         host = discovery_info.ip
         unique_id = discovery_info.macaddress.lower().replace(":", "")
         await self.async_set_unique_id(unique_id)

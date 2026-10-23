@@ -1,0 +1,29 @@
+{
+  "entity": {
+    "climate": {
+      "unit": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "quiet": "mdi:volume-low",
+              "turbo": "mdi:weather-windy"
+            }
+          },
+          "preset_mode": {
+            "state": {
+              "freeze_protect": "mdi:snowflake-thermometer"
+            }
+          }
+        }
+      }
+    },
+    "switch": {
+      "display": {
+        "default": "mdi:led-on"
+      },
+      "sleep": {
+        "default": "mdi:sleep"
+      }
+    }
+  }
+}

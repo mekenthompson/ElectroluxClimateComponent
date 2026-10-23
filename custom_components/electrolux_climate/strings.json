@@ -8,11 +8,11 @@
         }
       },
       "finish": {
-        "title": "[%key:common::config_flow::step::finish::title%]",
+        "title": "Configure the device",
         "data": {
           "name": "[%key:common::config_flow::data::name%]",
-          "max_temp": "[%key:common::config_flow::data::name%]",
-          "min_temp": "[%key:common::config_flow::data::name%]"
+          "min_temp": "Minimum temperature",
+          "max_temp": "Maximum temperature"
         }
       }
     },
@@ -28,6 +28,33 @@
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
       "invalid_host": "[%key:common::config_flow::error::invalid_host%]",
       "unknown": "[%key:common::config_flow::error::unknown%]"
+    }
+  },
+  "entity": {
+    "climate": {
+      "unit": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "quiet": "Quiet",
+              "turbo": "Turbo"
+            }
+          },
+          "preset_mode": {
+            "state": {
+              "freeze_protect": "8°C heat"
+            }
+          }
+        }
+      }
+    },
+    "switch": {
+      "display": {
+        "name": "Display"
+      },
+      "sleep": {
+        "name": "Sleep"
+      }
     }
   }
 }
