@@ -113,6 +113,28 @@ def swing_vertical(status: dict) -> str:
     return "vertical" if status.get("ac_vdir") else "off"
 
 
+def swing_horizontal(status: dict) -> str:
+    return "on" if status.get("ac_hdir") else "off"
+
+
+def off_timer_minutes(status: dict) -> int:
+    """Minutes until the unit turns itself off. Second timer slot, proven live."""
+    raw = status.get("timer")
+    if not isinstance(raw, str):
+        return 0
+    parts = raw.split("|")
+    if len(parts) < 3 or len(parts[2]) != 4 or not parts[2].isdigit():
+        return 0
+    hours = int(parts[2][:2])
+    minutes = int(parts[2][2:])
+    return hours * 60 + minutes
+
+
+def split_timer_minutes(total: int) -> tuple[int, int]:
+    total = max(0, min(int(total), 23 * 60 + 59))
+    return divmod(total, 60)
+
+
 def mode_for_hvac(hvac_mode_value: str) -> int:
     mode = MODE_BY_HVAC.get(hvac_mode_value)
     if mode is None:

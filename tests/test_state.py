@@ -78,6 +78,13 @@ class StateMapTest(unittest.TestCase):
         self.assertEqual(mode_for_hvac("cool"), 0)
         self.assertEqual(mode_for_hvac("fan_only"), 3)
 
+    def test_off_timer_is_the_second_slot(self) -> None:
+        self.assertEqual(_state.off_timer_minutes({"timer": "0000|01|0015|00"}), 15)
+        self.assertEqual(_state.off_timer_minutes({"timer": "0000|01|0000|00"}), 0)
+        self.assertEqual(_state.split_timer_minutes(75), (1, 15))
+        self.assertEqual(_state.swing_horizontal({"ac_hdir": 1}), "on")
+        self.assertEqual(_state.swing_horizontal({"ac_hdir": 0}), "off")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -19,6 +19,8 @@ from homeassistant.components.climate.const import (
     PRESET_NONE,
     SWING_OFF,
     SWING_VERTICAL,
+    SWING_HORIZONTAL_OFF,
+    SWING_HORIZONTAL_ON,
     ClimateEntityFeature,
     HVACAction,
     HVACMode,
@@ -40,6 +42,7 @@ from .state import (
     mode_for_hvac,
     mode_for_preset,
     preset_mode,
+    swing_horizontal,
     swing_vertical,
 )
 
@@ -75,12 +78,14 @@ class ElectroluxClimateEntity(CoordinatorEntity[ElectroluxCoordinator], ClimateE
     ]
     _attr_fan_modes = [FAN_AUTO, FAN_LOW, FAN_MEDIUM, FAN_HIGH, FAN_QUIET, FAN_TURBO]
     _attr_swing_modes = [SWING_OFF, SWING_VERTICAL]
+    _attr_swing_horizontal_modes = [SWING_HORIZONTAL_OFF, SWING_HORIZONTAL_ON]
     _attr_preset_modes = [PRESET_NONE, PRESET_FREEZE]
     _attr_supported_features = (
         ClimateEntityFeature.TARGET_TEMPERATURE
         | ClimateEntityFeature.FAN_MODE
         | ClimateEntityFeature.PRESET_MODE
         | ClimateEntityFeature.SWING_MODE
+        | ClimateEntityFeature.SWING_HORIZONTAL_MODE
         | ClimateEntityFeature.TURN_ON
         | ClimateEntityFeature.TURN_OFF
     )
@@ -110,6 +115,7 @@ class ElectroluxClimateEntity(CoordinatorEntity[ElectroluxCoordinator], ClimateE
         self._attr_target_temperature = status.get("temp")
         self._attr_fan_mode = fan_mode(status)
         self._attr_swing_mode = swing_vertical(status)
+        self._attr_swing_horizontal_mode = swing_horizontal(status)
         self._attr_device_info = self.coordinator.device_info()
 
     async def async_set_hvac_mode(self, hvac_mode_value: HVACMode) -> None:
@@ -152,6 +158,13 @@ class ElectroluxClimateEntity(CoordinatorEntity[ElectroluxCoordinator], ClimateE
         await self.hass.async_add_executor_job(
             self.coordinator.device.set_swing,
             swing_mode_value == SWING_VERTICAL,
+        )
+        await self.coordinator.async_request_refresh()
+
+    async def async_set_swing_horizontal_mode(self, swing_horizontal_mode: str) -> None:
+        await self.hass.async_add_executor_job(
+            self.coordinator.device.set_horizontal,
+            swing_horizontal_mode == SWING_HORIZONTAL_ON,
         )
         await self.coordinator.async_request_refresh()
 

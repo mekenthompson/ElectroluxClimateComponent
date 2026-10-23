@@ -25,7 +25,6 @@ async def async_setup_entry(
         [
             _BitSensor(coordinator, "compressor", "ac_compressorstatus", BinarySensorDeviceClass.RUNNING),
             _BitSensor(coordinator, "defrost", "ac_evapordefroststate", None),
-            _BitSensor(coordinator, "horizontal_swing", "ac_hdir", None),
         ]
     )
 

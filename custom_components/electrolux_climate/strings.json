@@ -74,6 +74,11 @@
       "status_code": {
         "name": "Status code"
       }
+    },
+    "number": {
+      "sleep_timer": {
+        "name": "Sleep timer"
+      }
     }
   }
 }

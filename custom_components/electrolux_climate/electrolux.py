@@ -98,6 +98,10 @@ class electrolux(Device):
         resp = self._send(0x19, bytearray('{"ac_vdir":%s}'%(1 if swing_on else 0), "ascii"))
         return str(resp, "ascii")
 
+    def set_horizontal(self, swing_on: bool) -> str:
+        resp = self._send(0x19, bytearray('{"ac_hdir":%s}'%(1 if swing_on else 0), "ascii"))
+        return str(resp, "ascii")
+
     def set_led(self, led_on: bool) -> str:
         resp = self._send(0x19, bytearray('{"scrdisp":%s}'%(1 if led_on else 0), "ascii"))
         return str(resp, "ascii")
